@@ -70,14 +70,16 @@ build: $(SRC_DIRS)
           module load gnu; \
           module load openmpi_ib; \
           module load gsl; \
-	  ./configure --prefix=$(ROOT)/$(PKGROOT) --without-iv --without-x --with-paranrn --with-nrnpython=/opt/python/bin/python; \
+	  ./configure --prefix=$(PKGROOT) --without-iv --without-x --with-paranrn --with-nrnpython=/opt/python/bin/python; \
 	  $(MAKE); \
 	)
 	@echo "::: Package $(NAME) build complete :::"
 	
 install::
+	mkdir -p $(PKGROOT)
 	mkdir -p $(ROOT)/$(PKGROOT)
 	mkdir -p $(REDHAT.ROOT)/src/build-neuron-modules
+	mount --bind $(ROOT)/$(PKGROOT) $(PKGROOT)
 	( \
 	  cd $(SOURCE_DIR); \
           . /etc/profile.d/modules.sh; \
@@ -86,8 +88,9 @@ install::
           module load gsl; \
 	  $(MAKE) install; \
           cd src/nrnpython; \
-          python setup.py install --prefix=$(ROOT)/$(PKGROOT) \
+          python setup.py install --prefix=$(PKGROOT) \
 	)
+	-mount $(PKGROOT)
 	cat neuron.module | perl -pi -e "s!MODULEROOT!/opt/modulefiles/applications/neuron!g;s!VERSION!$(VERSION)!g" \
           > $(REDHAT.ROOT)/src/build-neuron-modules/$(NAME).module
 	@echo "::: Package $(NAME) install complete :::"
