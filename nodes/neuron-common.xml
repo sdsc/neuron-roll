@@ -1,0 +1,26 @@
+<?xml version="1.0" standalone="no"?>
+
+<kickstart>
+
+
+	<description>
+	http://www.neuron.yale.edu/neuron/
+	</description>
+
+	<copyright>
+	Copyright (c) 2000 - 2014 The Regents of the University of California.
+	All rights reserved. Rocks(r) v6.1.1 www.rocksclusters.org
+	
+	</copyright>
+
+	<changelog>
+	$Log$
+	</changelog>
+
+	<package>neuron</package>
+	<package>neuron-roll-test</package>
+	<package>neuron-roll-modules</package>
+	<package>roll-neuron-usersguide</package>
+
+
+</kickstart>

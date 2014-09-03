@@ -1,0 +1,17 @@
+<preface id="preface" xreflabel="preface">
+<title>Preface</title>
+
+
+<para>
+The neuron Roll installs and configures the neuron simulation environment
+</para>
+
+
+<para>
+Please visit the <ulink
+url="http://www.neuron.yale.edu">neuron
+site</ulink> to learn more about their release and the individual
+software components.
+</para>
+
+</preface>
