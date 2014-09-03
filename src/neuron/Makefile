@@ -90,7 +90,7 @@ install::
           cd src/nrnpython; \
           python setup.py install --prefix=$(PKGROOT) \
 	)
-	-mount $(PKGROOT)
+	-umount $(PKGROOT)
 	cat neuron.module | perl -pi -e "s!MODULEROOT!/opt/modulefiles/applications/neuron!g;s!VERSION!$(VERSION)!g" \
           > $(REDHAT.ROOT)/src/build-neuron-modules/$(NAME).module
 	@echo "::: Package $(NAME) install complete :::"
