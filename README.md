@@ -22,6 +22,7 @@ Rocks development machine.
 
 ## Dependencies
 
+math roll (for gsl) , scipy roll (for python neuron module),
 gnucompiler and mpi rolls
 
 
