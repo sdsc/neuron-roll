@@ -2,11 +2,13 @@
 
 ## Overview
 
-This roll bundles neuron
+This roll bundles NEURON
 
-For more information about the various packages included in the neuron roll please visit their official web pages:
+For more information about the various packages included in the neuron roll 
+please visit their official web pages:
 
-- <a href="http://www.neuron.yale.edu" target="_blank"></a> is .
+- <a href="http://www.neuron.yale.edu" target="_blank">NEURON</a> is "a flexible 
+and powerful simulator of neurons and networks".
 
 
 ## Requirements
