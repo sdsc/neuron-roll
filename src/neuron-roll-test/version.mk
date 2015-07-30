@@ -1,4 +1,6 @@
-NAME	     = neuron-roll-test
-VERSION	     = 1
-RELEASE	     = 1
-RPM.EXTRAS   = AutoReq:No
+NAME	   = sdsc-neuron-roll-test
+VERSION	   = 1
+RELEASE	   = 2
+PKGROOT    = /root/rolltests
+
+RPM.EXTRAS = AutoReq:No
