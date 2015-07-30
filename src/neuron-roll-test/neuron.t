@@ -8,18 +8,11 @@ use Test::More qw(no_plan);
 
 my $appliance = $#ARGV >= 0 ? $ARGV[0] :
                 -d '/export/rocks/install' ? 'Frontend' : 'Compute';
-my $installedOnAppliancesPattern = 'Compute';
+my $installedOnAppliancesPattern = '.';
 my $output;
 my $TESTFILE = 'tmpneuron';
 
-# neuron_doc.xml
-if ($appliance eq 'Frontend') {
-  ok(-d '/var/www/html/roll-documentation/6.1/neuron', 'doc installed');
-} else {
-  ok(! -d '/var/www/html/roll-documentation/6.1/neuron', 'doc not installed');
-}
-
-# neuron-install.xml
+# neuron-common.xml
 if($appliance =~ /$installedOnAppliancesPattern/) {
   ok(-d "/opt/neuron", "neuron installed");
 } else {
@@ -28,8 +21,8 @@ if($appliance =~ /$installedOnAppliancesPattern/) {
 
 SKIP: {
 
-  `mkdir $TESTFILE.dir`;
   skip 'neuron not installed', 1 if ! -d "/opt/neuron";
+  `mkdir $TESTFILE.dir`;
   open(OUT, ">$TESTFILE.sh");
   print OUT <<END;
 if test -f /etc/profile.d/modules.sh; then

@@ -53,47 +53,57 @@
 # IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # 
 # @Copyright@
-#
-# $Log$
-#
 
 REDHAT.ROOT = $(CURDIR)/../../
 
 -include $(ROCKSROOT)/etc/Rules.mk
-include Rules.mk
-include pull.mk
+include $(SDSCDEVEL)/Pull.mk
+include $(SDSCDEVEL)/Rules.mk
+
+$(NAME).spec: DESCRIPTION LICENSE
+
+DESCRIBE_GSL = echo built with gsl $(call GET_MODULE_VERSION, gsl)
+MODULE_LOAD_GSL = $(call MODULE_LOAD_PACKAGE, gsl, GSLHOME)
+
+DESCRIPTION:
+	$(MODULE_LOAD_CC); \
+	( \
+	  $(DESCRIBE_PKG); \
+	  $(DESCRIBE_CC); \
+	  $(DESCRIBE_MPI); \
+	  $(DESCRIBE_GSL); \
+	  $(DESCRIBE_PYTHON) \
+	) > $@
+
+LICENSE: $(SRC_DIRS)
+	$(CHECK_LICENSE_FILES)
+	echo GPL > $@
 
 build: $(SRC_DIRS)
 	( \
 	  cd $(SOURCE_DIR); \
-          . /etc/profile.d/modules.sh; \
-          module load gnu; \
-          module load openmpi_ib; \
-          module load gsl; \
-	  ./configure --prefix=$(PKGROOT) --without-iv --without-x --with-paranrn --with-nrnpython=/opt/python/bin/python; \
-	  $(MAKE); \
+	  $(MODULE_LOAD_CC); \
+	  $(MODULE_LOAD_MPI); \
+	  $(MODULE_LOAD_GSL); \
+	  $(MODULE_LOAD_PYTHON); \
+	  ./configure --prefix=$(PKGROOT) --without-iv --without-x --with-paranrn --with-nrnpython=`which python`; \
+	  $(MAKE) \
 	)
 	@echo "::: Package $(NAME) build complete :::"
 	
 install::
-	mkdir -p $(PKGROOT)
-	mkdir -p $(ROOT)/$(PKGROOT)
-	mkdir -p $(REDHAT.ROOT)/src/build-neuron-modules
-	mount --bind $(ROOT)/$(PKGROOT) $(PKGROOT)
+	mkdir -p -m 755 $(ROOT)/$(PKGROOT)
+	$(PKGROOT_BIND_MOUNT)
 	( \
 	  cd $(SOURCE_DIR); \
-          . /etc/profile.d/modules.sh; \
-          module load gnu; \
-          module load openmpi_ib; \
-          module load gsl; \
+	  $(MODULE_LOAD_PYTHON); \
 	  $(MAKE) install; \
-          cd src/nrnpython; \
+	  cd src/nrnpython; \
           python setup.py install --prefix=$(PKGROOT) \
 	)
-	-umount $(PKGROOT)
-	cat neuron.module | perl -pi -e "s!MODULEROOT!/opt/modulefiles/applications/neuron!g;s!VERSION!$(VERSION)!g" \
-          > $(REDHAT.ROOT)/src/build-neuron-modules/$(NAME).module
+	$(PKGROOT_BIND_UMOUNT)
+	$(INSTALL_LICENSE_FILES)
 	@echo "::: Package $(NAME) install complete :::"
 
 clean::
-	rm -rf $(SOURCE_DIR)
+	rm -rf $(SOURCE_DIR) DESCRIPTION LICENSE

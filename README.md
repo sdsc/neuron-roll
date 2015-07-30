@@ -24,27 +24,54 @@ Rocks development machine.
 
 ## Dependencies
 
-math roll (for gsl) , scipy roll (for python neuron module),
-gnucompiler and mpi rolls
+The sdsc-roll must be installed on the build machine, since the build process
+depends on make include files provided by that roll.
+
+The roll sources assume that modulefiles provided by SDSC compiler, python, and mpi
+rolls are available, but it will build without them as long as the environment
+variables they provide are otherwise defined.
+
+The build process requires the gsl libraries and assumes that the gsl
+modulefile provided by the SDSC math-roll is available.  It will build without
+the modulefile as long as the environment variables it provides are otherwise
+defined.
 
 
 ## Building
 
-To build the neuron-roll, execute these instructions on a Rocks development
+To build the neuron-roll, execute this on a Rocks development
 machine (e.g., a frontend or development appliance):
 
 ```shell
-% make default 2>&1 | tee build.log
-% grep "RPM build error" build.log
+% make 2>&1 | tee build.log
 ```
 
-If nothing is returned from the grep command then the roll should have been
-created as... `neuron-*.iso`. If you built the roll on a Rocks frontend then
-proceed to the installation step. If you built the roll on a Rocks development
-appliance you need to copy the roll to your Rocks frontend before continuing
-with installation.
+A successful build will create the file `abyss-*.disk1.iso`.  If you built the
+roll on a Rocks frontend, proceed to the installation step. If you built the
+roll on a Rocks development appliance, you need to copy the roll to your Rocks
+frontend before continuing with installation.
 
-This roll builds neuron with the latest gnu compilers and openmpi
+This roll source supports building with different compilers and for different
+MPI flavors.  The `ROLLCOMPILER` and `ROLLMPI` make variables can be used to
+specify the names of compiler and MPI modulefiles to use for building the
+software, e.g.,
+
+```shell
+make ROLLCOMPILER=intel ROLLMPI=mvapich2_ib 2>&1 | tee build.log
+```
+
+The build process recognizes "gnu", "intel" or "pgi" as the value for the
+`ROLLCOMPILER` variable; any MPI modulefile name may be used as the value of
+the `ROLLMPI` variable.  The default values are "gnu" and "rocks-openmpi".
+
+The roll also supports specifying building with/for python versions other than
+the one included with the o/s.  To use this feature, specify a `ROLLPY` make
+variable that includes a space-delimited list of python modulefiles, e.g.,
+
+```shell
+% make ROLLPY=opt-python 2>&1 | tee build.log
+```
+
 
 ## Installation
 
@@ -62,22 +89,16 @@ In addition to the software itself, the roll installs neuron environment
 module files in:
 
 ```shell
-/opt/modulefiles/applications/.(compiler)/neuron
+/opt/modulefiles/applications/neuron
 ```
 
 
 ## Testing
 
 The neuron-roll includes a test script which can be run to verify proper
-installation of the neuron-roll documentation, binaries and module files. To
+installation of the roll documentation, binaries and module files. To
 run the test scripts execute the following command(s):
 
 ```shell
 % /root/rolltests/neuron.t 
-ok 1 - neuron is installed
-ok 2 - neuron test run
-ok 3 - neuron module installed
-ok 4 - neuron version module installed
-ok 5 - neuron version module link created
-1..5
 ```

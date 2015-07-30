@@ -1,16 +1,30 @@
-PKGROOT            = /opt/neuron
-NAME               = neuron
-VERSION            = 7.3
-RELEASE            = 1
-TARBALL_POSTFIX    = tgz
+ifndef ROLLCOMPILER
+  ROLLCOMPILER = gnu
+endif
+COMPILERNAME := $(firstword $(subst /, ,$(ROLLCOMPILER)))
 
-SRC_SUBDIR         = neuron
+ifndef ROLLMPI
+  ROLLMPI = rocks-openmpi
+endif
+MPINAME := $(firstword $(subst /, ,$(ROLLMPI)))
 
-SOURCE_NAME        = nrn
-SOURCE_VERSION     = $(VERSION)
-SOURCE_SUFFIX      = tar.gz
-SOURCE_PKG         = $(SOURCE_NAME)-$(SOURCE_VERSION).$(SOURCE_SUFFIX)
-SOURCE_DIR         = $(SOURCE_PKG:%.$(SOURCE_SUFFIX)=%)
+ifndef ROLLPY
+  ROLLMPI = python
+endif
 
-TAR_GZ_PKGS        = $(SOURCE_PKG)
-RPM.EXTRAS         = AutoReq:No
+NAME           = sdsc-neuron
+VERSION        = 7.3
+RELEASE        = 2
+PKGROOT        = /opt/neuron
+
+SRC_SUBDIR     = neuron
+
+SOURCE_NAME    = nrn
+SOURCE_SUFFIX  = tar.gz
+SOURCE_VERSION = $(VERSION)
+SOURCE_PKG     = $(SOURCE_NAME)-$(SOURCE_VERSION).$(SOURCE_SUFFIX)
+SOURCE_DIR     = $(SOURCE_PKG:%.$(SOURCE_SUFFIX)=%)
+
+TAR_GZ_PKGS    = $(SOURCE_PKG)
+
+RPM.EXTRAS     = AutoReq:No
