@@ -46,7 +46,7 @@ machine (e.g., a frontend or development appliance):
 % make 2>&1 | tee build.log
 ```
 
-A successful build will create the file `abyss-*.disk1.iso`.  If you built the
+A successful build will create the file `neuron-*.disk1.iso`.  If you built the
 roll on a Rocks frontend, proceed to the installation step. If you built the
 roll on a Rocks development appliance, you need to copy the roll to your Rocks
 frontend before continuing with installation.
@@ -100,5 +100,5 @@ installation of the roll documentation, binaries and module files. To
 run the test scripts execute the following command(s):
 
 ```shell
-% /root/rolltests/neuron.t 
+% /root/rolltests/neuron.t
 ```
