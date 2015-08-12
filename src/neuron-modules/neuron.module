@@ -1,7 +1,7 @@
 #%Module1.0
 module-whatis "NEURON simulator"
 module-whatis "Version: VERSION"
-module-whatis "Description: abyss"
+module-whatis "Description: neuron"
 module-whatis "Compiler: ROLLCOMPILER"
 module-whatis "MPI Flavors: ROLLMPI"
 setenv NEURONHOME /opt/neuron/share/nrn
