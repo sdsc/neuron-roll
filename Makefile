@@ -63,7 +63,7 @@ ifndef ROLLMPI
 endif
 
 ifndef ROLLPY
-  ROLLMPI = python
+  ROLLPY = python
 endif
 
 -include $(ROLLSROOT)/etc/Rolls.mk

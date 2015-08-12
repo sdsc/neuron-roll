@@ -9,12 +9,12 @@ endif
 MPINAME := $(firstword $(subst /, ,$(ROLLMPI)))
 
 ifndef ROLLPY
-  ROLLMPI = python
+  ROLLPY = python
 endif
 
 NAME           = sdsc-neuron
 VERSION        = 7.3
-RELEASE        = 2
+RELEASE        = 3
 PKGROOT        = /opt/neuron
 
 SRC_SUBDIR     = neuron
