@@ -8,4 +8,4 @@ setenv NEURONHOME /opt/neuron/share/nrn
 append-path PATH /opt/neuron/x86_64/bin
 append-path PYTHONPATH /opt/neuron/lib/python2.7/site-packages
 append-path LD_LIBRARY_PATH /opt/neuron/x86_64/lib
-module load gnu gsl python
+module load ROLLCOMPILER ROLLMPI gsl python
