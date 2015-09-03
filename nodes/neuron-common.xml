@@ -12,7 +12,7 @@ All rights reserved. Rocks(r) v6.1.1 www.rocksclusters.org
 </copyright>
 
 <package>sdsc-neuron</package>
+<package>sdsc-neuron-modules</package>
 <package>sdsc-neuron-roll-test</package>
-<package>sdsc-neuron-roll-modules</package>
 
 </kickstart>

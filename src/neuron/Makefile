@@ -96,6 +96,8 @@ install::
 	$(PKGROOT_BIND_MOUNT)
 	( \
 	  cd $(SOURCE_DIR); \
+	  $(MODULE_LOAD_CC); \
+	  $(MODULE_LOAD_MPI); \
 	  $(MODULE_LOAD_PYTHON); \
 	  $(MAKE) install; \
 	  cd src/nrnpython; \
