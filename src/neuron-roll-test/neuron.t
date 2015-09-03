@@ -9,54 +9,56 @@ use Test::More qw(no_plan);
 my $appliance = $#ARGV >= 0 ? $ARGV[0] :
                 -d '/export/rocks/install' ? 'Frontend' : 'Compute';
 my $installedOnAppliancesPattern = '.';
+my $isInstalled = -d '/opt/neuron';
 my $output;
+
 my $TESTFILE = 'tmpneuron';
 
 # neuron-common.xml
 if($appliance =~ /$installedOnAppliancesPattern/) {
-  ok(-d "/opt/neuron", "neuron installed");
+  ok($isInstalled, "neuron installed");
 } else {
-  ok(! -d "/opt/neuron", "neuron not installed");
+  ok(! $isInstalled, "neuron not installed");
 }
 
-SKIP: {
-
-  skip 'neuron not installed', 1 if ! -d "/opt/neuron";
-  `mkdir $TESTFILE.dir`;
-  open(OUT, ">$TESTFILE.sh");
-  print OUT <<END;
-if test -f /etc/profile.d/modules.sh; then
-  . /etc/profile.d/modules.sh
-  module load neuron
-  cd $TESTFILE.dir
-  hg clone http://www.neuron.yale.edu/hg/nrntest 
-  cd nrntest
-  neurondemo <<EOF
-
-EOF
-  sh testutil/clean
-  sh runtests
-fi
+# from http://www.neuron.yale.edu/hg/nrntest/ivoc/Matrix/fprint.hoc
+open(OUT, ">$TESTFILE.hoc");
+print OUT <<END;
+objref m,m2, f
+m = new Matrix(3,4)
+for i=0,m.nrow-1 for j=0,m.ncol-1 m.x[i][j] = 10*i + j
+f = new File()
+f.wopen("$TESTFILE.dat")
+m.fprint(f)
+f.close()
+f.ropen("$TESTFILE.dat")
+m2 = new Matrix()
+m2.scanf(f)
+f.close()
+m2.printf
+f.wopen("$TESTFILE.dat")
+m.fprint(0, f)
+f.close()
+m2 = new Matrix()
+f.ropen("$TESTFILE.dat")
+m2.scanf(f, 4, 3)
+f.close()
+m2.printf()
 END
-  close(OUT);
-  `/bin/bash $TESTFILE.sh >& .o`;
-  ok(`grep -c succeed .o` >= 48, 'neuron works');
-  `rm -rf $TESTFILE.dir`;
-}
-
+close(OUT);
 
 SKIP: {
 
-  skip 'neuron not installed', 1
-    if $appliance !~ /$installedOnAppliancesPattern/;
-  skip 'modules not installed', 1 if ! -f '/etc/profile.d/modules.sh';
-    my ($noVersion) = "neuron" =~ m#([^/]+)#;
-    `/bin/ls /opt/modulefiles/applications/$noVersion/[0-9]* 2>&1`;
-    ok($? == 0, "neuron module installed");
-    `/bin/ls /opt/modulefiles/applications/$noVersion/.version.[0-9]* 2>&1`;
-    ok($? == 0, "neuron version module installed");
-    ok(-l "/opt/modulefiles/applications/$noVersion/.version",
-       "neuron version module link created");
+  skip 'neuron not installed', 4 if ! $isInstalled;
+  $output = `module load neuron; nrniv -nogui -nobanner $TESTFILE.hoc 2>&1`;
+  like($output, qr/ 3\s+10\s+11/, 'neuron test run');
+  `/bin/ls /opt/modulefiles/applications/neuron/[0-9]* 2>&1`;
+  ok($? == 0, 'neuron module installed');
+  `/bin/ls /opt/modulefiles/applications/neuron/.version.[0-9]* 2>&1`;
+  ok($? == 0, 'neuron version module installed');
+  ok(-l '/opt/modulefiles/applications/neuron/.version',
+     'neuron version module link created');
+
 }
 
-`rm -fr .o $TESTFILE*`;
+`rm -fr $TESTFILE*`;
