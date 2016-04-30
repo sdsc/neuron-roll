@@ -14,7 +14,7 @@ endif
 
 NAME           = sdsc-neuron
 VERSION        = 7.3
-RELEASE        = 4
+RELEASE        = 5
 PKGROOT        = /opt/neuron
 
 SRC_SUBDIR     = neuron
