@@ -63,6 +63,7 @@ make ROLLCOMPILER=intel ROLLMPI=mvapich2_ib ROLLPY=opt-python 2>&1 | tee build.l
 The build process recognizes "gnu", "intel" or "pgi" as the value for the
 `ROLLCOMPILER` variable; any MPI modulefile name may be used as the value of
 the `ROLLMPI` variable, and any python modulefile name for the ROLLPY variable.
+The default values are "gnu", "rocks-openmpi", and "python".
 
 
 ## Installation
