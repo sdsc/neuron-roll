@@ -1,0 +1,18 @@
+--- neuron_gnu_builtin.h	2017-08-03 15:41:58.000000000 -0700
++++ patch-files/neuron_gnu_builtin.h	2017-08-03 15:42:32.000000000 -0700
+@@ -73,6 +73,7 @@
+ 
+ 
+ // sunpro CC v4 complains about the following being both extern and inline
++#if 0
+ #if !defined(__SUNPRO_CC)
+ double abs(double arg);
+ float abs(float arg);
+@@ -91,6 +92,7 @@
+ void clearbit(long& x, long b);
+ int testbit(long x, long b);
+ #endif
++#endif
+ #if !defined(IV)
+ 
+ #ifndef __xlC__

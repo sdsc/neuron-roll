@@ -81,12 +81,16 @@ LICENSE: $(SRC_DIRS)
 	echo GPL > $@
 
 build: $(SRC_DIRS)
+	patch $(SOURCE_DIR)/src/gnu/neuron_gnu_builtin.h patch-files/neuron_gnu_builtin.h.patch
 	( \
 	  cd $(SOURCE_DIR); \
 	  $(MODULE_LOAD_CC); \
 	  $(MODULE_LOAD_MPI); \
 	  $(MODULE_LOAD_GSL); \
 	  $(MODULE_LOAD_PYTHON); \
+	  if test "$(COMPILERNAME)" = "gnu"; then \
+	    export CXXFLAGS='-std=c++98'; \
+	  fi; \
 	  ./configure --prefix=$(PKGROOT) --without-iv --without-x --with-paranrn --with-nrnpython=`which python`; \
 	  $(MAKE) \
 	)
