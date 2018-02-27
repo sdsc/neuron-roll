@@ -12,17 +12,17 @@ All rights reserved. Rocks(r) v7.0 www.rocksclusters.org
 </copyright>
 
 <edge from="compute">
-  <to>dppdiv-common</to>
+  <to>neuron-common</to>
 </edge>
 <order head="compute">
-  <tail>dppdiv-common</tail>
+  <tail>neuron-common</tail>
 </order>
 
 <edge from="login">
-  <to>dppdiv-common</to>
+  <to>neuron-common</to>
 </edge>
 <order head="login">
-  <tail>dppdiv-common</tail>
+  <tail>neuron-common</tail>
 </order>
 
 </graph>
